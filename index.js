@@ -20,15 +20,13 @@ app.get("/", (req,res)=>{
 app.post("/genarate",(req,res)=>{
 
    var text = req.body["link"];
-  
- 
+    console.log(text);
    var qr_img = qr.image(text, { type: 'png' });
-   qr_img.pipe(fs.createWriteStream("qr.png"));
+   var qrimgePath = __dirname + "/public/qr.png";
+   qr_img.pipe(fs.createWriteStream(qrimgePath));
 
-
-   const imgPath = __dirname + "/qr.png";
-
-   res.sendFile(imgPath)
+   console.log(qrimgePath);
+   qr_img.on('end', () => {res.render("output.ejs", { qrPath: "/qr.png" });});
    
 })
 
